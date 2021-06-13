@@ -4,7 +4,10 @@
 namespace App\Helpers;
 
 
-class RequestTransformer
+use App\Models\Book;
+use Illuminate\Support\Collection;
+
+class Transformer
 {
     public static function transformBook($book, $publisher, $country)
     {
@@ -16,5 +19,25 @@ class RequestTransformer
             "country_id" => $country->id,
             "release_date" => $book['release_date'],
         ];
+    }
+
+    public static function transformBooksFromExternalApi($response) : Collection
+    {
+        $books = [];
+
+        foreach($response as $r){
+            $book = new Book();
+            $book->name = $r['name'];
+            $book->isbn = $r['isbn'];
+            $book->number_of_pages = $r['numberOfPages'];
+            $book->authors = $r['authors'];
+            $book->publisher = $r['publisher'];
+            $book->country = $r['country'];
+            $book->release_date = $r['released'];
+
+            $books[] = $book;
+        }
+
+        return collect($books);
     }
 }
