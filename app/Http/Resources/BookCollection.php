@@ -8,6 +8,17 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class BookCollection extends ResourceCollection
 {
     /**
+     * @var bool
+     */
+    private $shouldIncludeId;
+
+    public function __construct($resource, $shouldIncludeId = true)
+    {
+        $this->shouldIncludeId = $shouldIncludeId;
+        parent::__construct($resource);
+    }
+
+    /**
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -15,28 +26,18 @@ class BookCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function($bookResource){
-                $book = $bookResource->resource;
+        $this->collection->each(function ($bookResource) {
+            $bookResource->shouldIncludeId = $this->shouldIncludeId;
+        });
 
-                $array = [];
-                if($book->exists) {
-                    $array['id'] = $book->id;
-                };
+        return $this->collection;
+    }
 
-                $array = $array + [
-                    "name" => $book->name,
-                    "isbn" => $book->isbn,
-                    "authors" => $book->exists ? $book->authors->map(function($author){
-                        return $author->name;
-                    }) : $book->authors,
-                    "number_of_pages" => $book->number_of_pages,
-                    "publisher" => $book->exists ? $book->publisher->name : $book->name,
-                    "country" => $book->exists ? $book->country->name : $book->name,
-                    "release_date" => $book->release_date
-                    ];
-
-                return $array;
-            });
-//        return parent::toArray($request);
+    public function with($request)
+    {
+        return [
+            "status_code" => Status::HTTP_OK,
+            "status" => "success",
+        ];
     }
 }

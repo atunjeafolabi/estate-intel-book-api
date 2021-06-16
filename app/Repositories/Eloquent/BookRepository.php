@@ -66,6 +66,10 @@ class BookRepository extends Repository implements BookRepositoryInterface
     {
         $book = $this->findOne($id);
 
+        if (!$book) {
+            throw new ModelNotFoundException();
+        }
+
         // update book
         $book->name = $bookInformation['name'];
         $book->isbn = $bookInformation['isbn'];
@@ -82,8 +86,7 @@ class BookRepository extends Repository implements BookRepositoryInterface
 
         // update Authors
         $book->authors()->detach();
-
-        foreach($book->authors as $author){
+        foreach ($book->authors as $author) {
             $author->delete();
         };
 
@@ -103,14 +106,13 @@ class BookRepository extends Repository implements BookRepositoryInterface
 
     public function findOne($id) : ?Book
     {
-        try{
-            $book = Book::findOrFail($id);
-            $book->load(['publisher', 'authors', 'country']);
-        }catch (ModelNotFoundException $e){
-            $book = null;
+        $book = Book::find($id);
+
+        if (!$book) {
+            return null;
         }
 
-        return $book;
+        return $book->load(['publisher', 'authors', 'country']);
     }
 
     public function delete($id) : Book
@@ -122,20 +124,22 @@ class BookRepository extends Repository implements BookRepositoryInterface
         return $book;
     }
 
-    public function findBookFromExternalAPI($nameOfBook = null) : Collection
+    public function findBookFromExternalAPI(string $bookUrl, string $nameOfBook = null) : Collection
     {
-        $bookUrl = env('EXTERNAL_API');
 
-        if($nameOfBook){
+        if ($nameOfBook) {
             $bookUrl = $bookUrl . "?name=" . $nameOfBook;
         }
 
-        $response = Http::get($bookUrl)->json();
-
-        return Transformer::transformBooksFromExternalApi($response);
+        return Transformer::transformBooksFromExternalApi(
+            Http::get($bookUrl)->json()
+        );
     }
 
-    public function deleteBookAndTheirAuthors(Book $book)
+    /**
+     * @param Book $book
+     */
+    private function deleteBookAndTheirAuthors(Book $book)
     {
         $book->authors()->detach();
         $book->delete();
@@ -145,7 +149,7 @@ class BookRepository extends Repository implements BookRepositoryInterface
      * @param array $newBookInformation
      * @param $book
      */
-    protected function saveAuthorsForBook(array $newBookInformation, $book)
+    private function saveAuthorsForBook(array $newBookInformation, Book $book)
     {
         foreach ($newBookInformation['authors'] as $author) {
             $author = $this->authorRepository->create(['name' => $author]);

@@ -3,13 +3,20 @@
 
 namespace App\Helpers;
 
-
 use App\Models\Book;
 use Illuminate\Support\Collection;
 
 class Transformer
 {
-    public static function transformBook($book, $publisher, $country)
+    /**
+     * Transform the book information sent when creating or updating a book
+     *
+     * @param $book
+     * @param $publisher
+     * @param $country
+     * @return array
+     */
+    public static function transformBook($book, $publisher, $country) : array
     {
         return [
             "name" => $book['name'],
@@ -21,11 +28,19 @@ class Transformer
         ];
     }
 
+    /**
+     * @param $response
+     * @return Collection
+     */
     public static function transformBooksFromExternalApi($response) : Collection
     {
         $books = [];
 
-        foreach($response as $r){
+        if (empty($response)) {
+            return collect($books);
+        }
+
+        foreach ($response as $r) {
             $book = new Book();
             $book->name = $r['name'];
             $book->isbn = $r['isbn'];

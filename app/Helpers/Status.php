@@ -2,7 +2,8 @@
 
 namespace App\Helpers;
 
-interface Status {
+interface Status
+{
     const HTTP_OK = 200;
     const HTTP_CREATED = 201;
     const HTTP_NO_CONTENT = 204;
