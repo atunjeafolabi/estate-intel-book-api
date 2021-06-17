@@ -62,6 +62,15 @@ Using Postman, the following endpoints are available
        "data":[]
     }
 
+##### Query strings    
+A book can be searched by a name, country, publisher or release date as follows:
+``` 
+api/v1/books?name=Essential Biology
+api/v1/books?country=Nigeria
+api/v1/books?publisher=Oxford Publishers
+api/v1/books?release_date=1999-01-01
+```
+
 ## Show one book
 
 #### Request
@@ -256,6 +265,7 @@ Using Postman, the following endpoints are available
 ### Future Works
 - Validation still needs to be added when creating or updating a  book.
 - More refactoring can still be done on the codebase
+- Seeders can be added for easily loading sample data into the database
 
 ### Issues
 - Kindly let me know if any issues are encountered.

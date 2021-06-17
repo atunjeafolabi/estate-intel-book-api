@@ -214,18 +214,24 @@ class BookControllerTest extends TestCase
         $response->assertNotFound();
     }
 
-    // TODO : This test is not good. To be modified
     public function test_can_get_books_from_external_api()
     {
+        $books = Transformer::transformBooksFromExternalApi(
+            $this::$booksTobeReturnedByExternalApi
+        );
+
+        $booksResource = (new BookCollection($books, false))
+            ->response()
+            ->getData(true);
+
         // Mock a fake external url
         $this->fakeExternalApi();
 
         // Hit endpoint to get books
         $response = $this->getJson("api/external-books");
 
-
         // Assert response
-        $response->assertExactJson($response->json());
+        $response->assertExactJson($booksResource);
     }
 
     public function test_get_a_book_by_name_from_external_api()

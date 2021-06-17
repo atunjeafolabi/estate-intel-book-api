@@ -119,6 +119,26 @@ class BookRepository extends Repository implements BookRepositoryInterface
                 }
                 $books->where(['country_id' => $country->id]);
             }
+
+            // search by release date
+            if (array_key_exists('release_date', $searchBy)){
+                $book = $this->findBy('release_date', $searchBy['release_date']);
+                if(!$book){
+                    throw new ModelNotFoundException('Book with release date not found');
+                }
+                dd($book);
+                return $book;
+            }
+
+            // search by name of book
+            if (array_key_exists('name', $searchBy)){
+                $book = $this->findBy('name', $searchBy['name']);
+                if(!$book){
+                    throw new ModelNotFoundException('Book with release date not found');
+                }
+
+                return $book;
+            }
         }
 
         $books = $books->get();
