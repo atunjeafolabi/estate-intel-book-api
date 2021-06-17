@@ -5,8 +5,8 @@ This solution implements a CRUD REST API for books with a local database. Additi
 
 ## Installation:
 - Clone the project: ```git clone https://github.com/atunjeafolabi/estate-intel-book-api.git```
-- Create a database
-- Rename ```.env.example``` to ```.env``` and fill it with the database credentials
+- Create a mysql database named ```estate_intel```
+- Rename ```.env.example``` to ```.env``` and fill it with the database credentials (username and password)
 - From the project root directory, run `composer install`
 - Run migrations ```php artisan migrate```
 - Run local dev server: ```php artisan serve``` 
