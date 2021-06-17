@@ -72,7 +72,7 @@ class BookController extends Controller
     {
         $bookUrl = env('EXTERNAL_API');
 
-        $nameOfBook = request()->query('nameOfBook');
+        $nameOfBook = request()->query('name');
 
         $books = $this->bookRepository->findBookFromExternalAPI($bookUrl, $nameOfBook);
 

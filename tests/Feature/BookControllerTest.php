@@ -242,7 +242,7 @@ class BookControllerTest extends TestCase
             ->response()
             ->getData(true);
 
-        $response = $this->getJson("api/external-books?nameOfBook=$nameOfBook");
+        $response = $this->getJson("api/external-books?name=$nameOfBook");
 
         $response->assertSuccessful();
         $response->assertExactJson($booksResource);
