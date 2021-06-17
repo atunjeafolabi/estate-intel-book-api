@@ -13,4 +13,9 @@ class CountryRepository extends Repository implements CountryRepositoryInterface
     {
         return Country::class;
     }
+
+    public function findCountryByName($name)
+    {
+        return Country::where(['name' => $name])->first();
+    }
 }

@@ -95,7 +95,7 @@ abstract class TestCase extends BaseTestCase
     protected static function searchBookToBeReturnedByExternalApi($nameOfBook)
     {
         foreach (self::$booksTobeReturnedByExternalApi as $book) {
-            return ($book['name'] === $nameOfBook) ?  [$book] : [];
+            return ($book['name'] === $nameOfBook) ?  $book : [];
         }
     }
 

@@ -3,11 +3,15 @@
 namespace Tests\Feature;
 
 use App\Helpers\Status;
+use App\Helpers\Transformer;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\DeletedResource;
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Country;
+use App\Models\Publisher;
+use Database\Factories\BookFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -118,6 +122,52 @@ class BookControllerTest extends TestCase
         $response->assertExactJson($booksResource);
     }
 
+    public function test_search_by_country()
+    {
+        $this->generateBooks(3);
+        $books = $this->generateBooksWithCountryGermany(2);
+
+        $booksResource = (new BookCollection($books, true))
+            ->response()
+            ->getData(true);
+
+        $country = 'Germany';   // case sensitive
+
+        $response = $this->getJson("api/v1/books?country=$country");
+
+        $response->assertExactJson($booksResource);
+    }
+
+    public function test_search_by_publisher()
+    {
+        $books = $this->generateBooks(3);
+
+        $booksResource = (new BookCollection($books, true))
+            ->response()
+            ->getData(true);
+
+        $publisherName = $books[0]->publisher->name;
+
+        $response = $this->getJson("api/v1/books?publisher=$publisherName");
+        $bookFromResponse = $response->json()['data'][0];
+
+        $this->assertSame($bookFromResponse ,$booksResource['data'][0]);
+    }
+
+    public function test_search_by_invalid_country_throws_exception()
+    {
+        $this->withoutExceptionHandling();
+        $this->expectException(ModelNotFoundException::class);
+
+        $this->generateBooks(3);
+        $books = $this->generateBooksWithCountryGermany(2);
+
+        $searchBy = 'country';
+        $country = 'invalid-country';   // case sensitive
+
+        $this->getJson("api/v1/books?country=$country");
+    }
+
     public function test_returns_empty_data_if_no_books_found()
     {
         $response = $this->get('api/v1/books');
@@ -164,6 +214,7 @@ class BookControllerTest extends TestCase
         $response->assertNotFound();
     }
 
+    // TODO : This test is not good. To be modified
     public function test_can_get_books_from_external_api()
     {
         // Mock a fake external url
@@ -172,7 +223,54 @@ class BookControllerTest extends TestCase
         // Hit endpoint to get books
         $response = $this->getJson("api/external-books");
 
+
         // Assert response
         $response->assertExactJson($response->json());
+    }
+
+    public function test_get_a_book_by_name_from_external_api()
+    {
+        $nameOfBook = 'Awesome Book';
+
+        $this->fakeExternalApi($nameOfBook);
+
+        $book = Transformer::transformBooksFromExternalApi(
+            $this::searchBookToBeReturnedByExternalApi($nameOfBook)
+        );
+
+        $booksResource = (new BookResource($book))
+            ->response()
+            ->getData(true);
+
+        $response = $this->getJson("api/external-books?nameOfBook=$nameOfBook");
+
+        $response->assertSuccessful();
+        $response->assertExactJson($booksResource);
+    }
+
+    protected function generateBooksWithCountryGermany($count)
+    {
+        // create publisher
+        $publisher = Publisher::factory()->create(['name' => 'Deutsch Publishers']);
+
+        // create country
+        $country = Country::factory()->create(['name' => 'Germany']);
+
+        // create book
+        $books = Book::factory()->count($count)->create([
+            "publisher_id" => $publisher->id,
+            "country_id" => $country->id,
+        ]);
+
+        // Attach authors to book
+        $books->each(function($book) {
+
+            //create authors
+            $author = Author::factory()->create(['name' => 'Kahn Oliver']);
+
+            $book->authors()->attach($author->id);
+        });
+
+        return $books;
     }
 }

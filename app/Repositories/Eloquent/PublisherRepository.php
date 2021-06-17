@@ -13,4 +13,9 @@ class PublisherRepository extends Repository implements PublisherRepositoryInter
     {
         return Publisher::class;
     }
+
+    public function findPublisherByName($name)
+    {
+        return Publisher::where(['name' => $name])->first();
+    }
 }

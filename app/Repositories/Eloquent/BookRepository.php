@@ -97,11 +97,34 @@ class BookRepository extends Repository implements BookRepositoryInterface
         return $book;
     }
 
-    public function findAll() : EloquentCollection
+    public function findAll(array $searchBy = []) : EloquentCollection
     {
-        $books = Book::with(['authors', 'publisher'])->get();
+        $books = Book::with(['authors', 'publisher']);
+
+        if ($searchBy){
+            // search by country
+            if (array_key_exists('country', $searchBy)){
+                $country = $this->countryRepository->findCountryByName($searchBy['country']);
+                if(!$country){
+                    throw new ModelNotFoundException('Invalid Country');
+                }
+                $books->where(['country_id' => $country->id]);
+            }
+
+            // search by publisher
+            if (array_key_exists('publisher', $searchBy)){
+                $country = $this->publisherRepository->findPublisherByName($searchBy['publisher']);
+                if(!$country){
+                    throw new ModelNotFoundException('Invalid Publisher');
+                }
+                $books->where(['country_id' => $country->id]);
+            }
+        }
+
+        $books = $books->get();
 
         return $books;
+
     }
 
     public function findOne($id) : ?Book
@@ -124,7 +147,7 @@ class BookRepository extends Repository implements BookRepositoryInterface
         return $book;
     }
 
-    public function findBookFromExternalAPI(string $bookUrl, string $nameOfBook = null) : Collection
+    public function findBookFromExternalAPI(string $bookUrl, string $nameOfBook = null)
     {
 
         if ($nameOfBook) {

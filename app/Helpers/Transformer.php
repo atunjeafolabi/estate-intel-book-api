@@ -32,12 +32,26 @@ class Transformer
      * @param $response
      * @return Collection
      */
-    public static function transformBooksFromExternalApi($response) : Collection
+    public static function transformBooksFromExternalApi($response)
     {
         $books = [];
 
         if (empty($response)) {
             return collect($books);
+        }
+
+        // Check if response is not multi-dimensional array
+        if(!self::isMultidimensional($response)){
+            $book = new Book();
+            $book->name = $response['name'];
+            $book->isbn = $response['isbn'];
+            $book->number_of_pages = $response['numberOfPages'];
+            $book->authors = $response['authors'];
+            $book->publisher = $response['publisher'];
+            $book->country = $response['country'];
+            $book->release_date = $response['released'];
+
+            return $book;
         }
 
         foreach ($response as $r) {
@@ -54,5 +68,12 @@ class Transformer
         }
 
         return collect($books);
+    }
+
+    private static function isMultidimensional($response)
+    {
+        return is_array(
+            $response[array_key_first($response)]
+        );
     }
 }

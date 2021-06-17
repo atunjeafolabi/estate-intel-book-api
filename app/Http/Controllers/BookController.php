@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\DeletedResource;
+use App\Models\Book;
 use App\Repositories\Contract\BookRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -46,7 +47,9 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = $this->bookRepository->findAll();
+        $searchBy = request()->query();
+
+        $books = $this->bookRepository->findAll($searchBy);
 
         return new BookCollection($books);
     }
@@ -71,8 +74,10 @@ class BookController extends Controller
 
         $nameOfBook = request()->query('nameOfBook');
 
-        $books = $this->bookRepository->findBookFromExternalAPI($bookUrl);
+        $books = $this->bookRepository->findBookFromExternalAPI($bookUrl, $nameOfBook);
 
-        return new BookCollection($books, false);
+        return ($books instanceof Book) ?
+            new BookResource($books) :
+            new BookCollection($books, false);
     }
 }
