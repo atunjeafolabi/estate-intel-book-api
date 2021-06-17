@@ -1,5 +1,7 @@
+# Books API
+
 ## Overview
-This solution implements a CRUD REST API with a local database. Additionally, an API that calls an external  service (ice and fire API) to get information about books is also implemented. All implementations are backed with tests.
+This solution implements a CRUD REST API for books with a local database. Additionally, an API that calls an external  service (ice and fire API) to get information about books is also implemented. All implementations are backed with tests.
 
 ## Installation:
 - Clone the project: ```git clone https://github.com/atunjeafolabi/estate-intel-book-api.git```
