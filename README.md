@@ -254,5 +254,6 @@ Using Postman, the following endpoints are available
 - Validation still needs to be added when creating or updating a  book.
 - More refactoring can still be done on the codebase
 
-### 
+### Issues
+- Kindly let me know if any issues are encountered.
 
