@@ -238,6 +238,7 @@ Using Postman, the following endpoints are available
 
 ### Running Test:
 
+- Create a file ```database.sqlite``` in the database folder of the project
 - ```composer test```
 - To run tests and generate test coverage, ```composer test:coverage```
 - Test coverage files are generated in the ```tests/coverage``` directory. The ```index.html``` file can be viewed in the browser.
