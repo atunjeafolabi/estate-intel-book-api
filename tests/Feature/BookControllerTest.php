@@ -55,12 +55,14 @@ class BookControllerTest extends TestCase
             ->response()
             ->getData(true);
 
+        $bookResource['message'] = "The book '" . $bookInfo['name'] . "' was updated successfully";
+
         // hit endpoint to update book
         $response = $this->patchJson("api/v1/books/$book->id", $bookInfo);
 
         // assert that book has been created
         $response->assertSuccessful();
-        $response->assertExactJson($bookResource);
+        $response->assertJson($bookResource);
     }
 
     /**

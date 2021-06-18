@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use App\Helpers\Status;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookResource extends JsonResource
@@ -53,7 +52,15 @@ class BookResource extends JsonResource
 
     public function with($request)
     {
-        return [
+        $array = [];
+
+        if($book = $this->resource){
+            if ($book->wasChanged()){
+                $array['message'] = "The book '$book->name' was updated successfully";
+            }
+        }
+
+        return $array + [
             "status_code" => Status::HTTP_OK,
             "status" => "success",
         ];

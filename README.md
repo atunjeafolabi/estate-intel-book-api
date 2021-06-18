@@ -12,7 +12,7 @@ This solution implements a CRUD REST API for books with a local database. Additi
 - Run local dev server: ```php artisan serve``` 
 
 ## Usage:
-Using Postman, the following endpoints are available
+The following endpoints are available and can easily be accessed as follows: 
 
 ### Get list of books
 

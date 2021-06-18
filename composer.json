@@ -1,9 +1,17 @@
 {
-    "name": "laravel/laravel",
+    "name": "Estate Intel Engineering Assessment",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "An API for books.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Afolabi Olatunji",
+            "email": "atunje_afolabi@yahoo.com",
+            "homepage": "http://atunje.com",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": "^7.3|^8.0",
         "derakht/repository-pattern": "^1.0",
