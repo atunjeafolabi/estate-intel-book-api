@@ -54,8 +54,8 @@ class BookResource extends JsonResource
     {
         $array = [];
 
-        if($book = $this->resource){
-            if ($book->wasChanged()){
+        if ($book = $this->resource) {
+            if ($book->wasChanged()) {
                 $array['message'] = "The book '$book->name' was updated successfully";
             }
         }

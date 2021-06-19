@@ -101,29 +101,29 @@ class BookRepository extends Repository implements BookRepositoryInterface
     {
         $books = Book::with(['authors', 'publisher']);
 
-        if ($searchBy){
+        if ($searchBy) {
             // search by country
-            if (array_key_exists('country', $searchBy)){
+            if (array_key_exists('country', $searchBy)) {
                 $country = $this->countryRepository->findCountryByName($searchBy['country']);
-                if(!$country){
+                if (!$country) {
                     throw new ModelNotFoundException('Invalid Country');
                 }
                 $books->where(['country_id' => $country->id]);
             }
 
             // search by publisher
-            if (array_key_exists('publisher', $searchBy)){
+            if (array_key_exists('publisher', $searchBy)) {
                 $country = $this->publisherRepository->findPublisherByName($searchBy['publisher']);
-                if(!$country){
+                if (!$country) {
                     throw new ModelNotFoundException('Invalid Publisher');
                 }
                 $books->where(['country_id' => $country->id]);
             }
 
             // search by release date
-            if (array_key_exists('release_date', $searchBy)){
+            if (array_key_exists('release_date', $searchBy)) {
                 $book = $this->findBy('release_date', $searchBy['release_date']);
-                if(!$book){
+                if (!$book) {
                     throw new ModelNotFoundException('Book with release date not found');
                 }
                 dd($book);
@@ -131,9 +131,9 @@ class BookRepository extends Repository implements BookRepositoryInterface
             }
 
             // search by name of book
-            if (array_key_exists('name', $searchBy)){
+            if (array_key_exists('name', $searchBy)) {
                 $book = $this->findBy('name', $searchBy['name']);
-                if(!$book){
+                if (!$book) {
                     throw new ModelNotFoundException('Book with release date not found');
                 }
 
@@ -144,7 +144,6 @@ class BookRepository extends Repository implements BookRepositoryInterface
         $books = $books->get();
 
         return $books;
-
     }
 
     public function findOne($id) : ?Book

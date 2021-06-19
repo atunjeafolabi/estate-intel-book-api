@@ -8,7 +8,7 @@ interface Status
     const HTTP_CREATED = 201;
     const HTTP_NO_CONTENT = 204;
 
-    const message = [
+    const MESSAGE = [
         self::HTTP_OK => 'OK',
         self::HTTP_CREATED => 'Created',
         self::HTTP_NO_CONTENT => 'No Content',

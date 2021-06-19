@@ -153,7 +153,7 @@ class BookControllerTest extends TestCase
         $response = $this->getJson("api/v1/books?publisher=$publisherName");
         $bookFromResponse = $response->json()['data'][0];
 
-        $this->assertSame($bookFromResponse ,$booksResource['data'][0]);
+        $this->assertSame($bookFromResponse, $booksResource['data'][0]);
     }
 
     public function test_search_by_invalid_country_throws_exception()
@@ -271,7 +271,7 @@ class BookControllerTest extends TestCase
         ]);
 
         // Attach authors to book
-        $books->each(function($book) {
+        $books->each(function ($book) {
 
             //create authors
             $author = Author::factory()->create(['name' => 'Kahn Oliver']);

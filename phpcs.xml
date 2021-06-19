@@ -2,6 +2,9 @@
 <ruleset name="PHP_CodeSniffer">
     <description>The coding standard for this project.</description>
     <rule ref="PSR2"/>
+    <rule ref="PSR1.Methods.CamelCapsMethodName">
+        <exclude-pattern>./tests/*</exclude-pattern>
+    </rule>
 
     <file>app</file>
     <file>bootstrap</file>
@@ -18,6 +21,7 @@
     <exclude-pattern>*/seeds/*</exclude-pattern>
     <exclude-pattern>*.blade.php</exclude-pattern>
     <exclude-pattern>*.js</exclude-pattern>
+    <exclude-pattern>vendor</exclude-pattern>
 
     <!-- Show progression -->
     <arg value="p"/>

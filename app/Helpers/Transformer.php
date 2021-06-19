@@ -41,7 +41,7 @@ class Transformer
         }
 
         // Check if response is not multi-dimensional array
-        if(!self::isMultidimensional($response)){
+        if (!self::isMultidimensional($response)) {
             $book = new Book();
             $book->name = $response['name'];
             $book->isbn = $response['isbn'];
