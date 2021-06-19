@@ -30,6 +30,11 @@ if [ "$FILES" != "" ]
 then
     echo "Running PHPUnit Tests..."
     ./vendor/bin/phpunit
+    if [ $? != 0 ]
+	then
+		echo "Fix the error before commit."
+		exit 1
+	fi
 
 	echo "Running Code Sniffer..."
 	./vendor/bin/phpcs --encoding=utf-8 -n -p $FILES

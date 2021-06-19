@@ -62,7 +62,7 @@ class BookResource extends JsonResource
 
         return $array + [
             "status_code" => Status::HTTP_OK,
-            "status" => Status::MESSAGE[Status::HTTP_OK],
+            "status" => Status::SUCCESS,
         ];
     }
 

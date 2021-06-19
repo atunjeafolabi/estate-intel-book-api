@@ -37,7 +37,7 @@ class BookCollection extends ResourceCollection
     {
         return [
             "status_code" => Status::HTTP_OK,
-            "status" => "success",
+            "status" => Status::SUCCESS,
         ];
     }
 }
