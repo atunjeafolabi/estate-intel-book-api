@@ -28,8 +28,11 @@ done
 
 if [ "$FILES" != "" ]
 then
+    echo "Running PHPUnit Tests..."
+    ./vendor/bin/phpunit
+
 	echo "Running Code Sniffer..."
-	./vendor/bin/phpcs --standard=PSR1 --encoding=utf-8 -n -p $FILES
+	./vendor/bin/phpcs --encoding=utf-8 -n -p $FILES
 	if [ $? != 0 ]
 	then
 		echo "Fix the error before commit."
