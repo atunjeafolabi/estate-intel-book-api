@@ -47,7 +47,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $searchBy = request()->query();
+        $searchBy = $this->request->query();
 
         $books = $this->bookRepository->findAll($searchBy);
 
@@ -72,7 +72,7 @@ class BookController extends Controller
     {
         $bookUrl = env('EXTERNAL_API');
 
-        $nameOfBook = request()->query('name');
+        $nameOfBook = $this->request->query('name');
 
         $books = $this->bookRepository->findBookFromExternalAPI($bookUrl, $nameOfBook);
 
