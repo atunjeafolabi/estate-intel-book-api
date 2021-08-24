@@ -1,5 +1,5 @@
 {
-    "name": "Estate Intel Engineering Assessment",
+    "name": "estate-intel/engineering-assessment",
     "type": "project",
     "description": "An API for books.",
     "keywords": ["framework", "laravel"],
